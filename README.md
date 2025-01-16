@@ -1,1 +1,1 @@
-Estudos do framework Django do Python. Projeto de Log de Aprendizagem que permite adicionar tópicos e assuntos.
+Estudos do framework Django do Python. Projeto de Log de Aprendizagem que permite adicionar tópicos e assuntos, com função de login e registro de usuarios.
