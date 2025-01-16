@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def index(request):
@@ -13,7 +14,7 @@ def index(request):
 @login_required
 def topics(request):
     """Mostra todos os assuntos."""
-    topics = Topic.objects.order_by('date_added')
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
     context = {"topics": topics}
     return render(request, "learning_logs/topics.html", context)
 
@@ -21,6 +22,9 @@ def topics(request):
 def topic(request,topic_id):
     """Mostra todos as entradas de um tópico"""
     topic = Topic.objects.get(id = topic_id)
+    #garante que o topico pertence ao usuario atual
+    if topic.owner != request.user:
+        raise Http404
     entries = topic.entry_set.order_by("-date_added")
     context = {"topic": topic, "entries": entries}
     return render(request, "learning_logs/topic.html", context)
@@ -35,7 +39,9 @@ def new_topic(request):
         #Dados de POST submetidos; processa os dados
         form = TopicForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
             return HttpResponseRedirect(reverse("topics"))
     context = {"form": form}
     return render(request, "learning_logs/new_topic.html", context)
@@ -44,6 +50,9 @@ def new_topic(request):
 def new_entry(request, topic_id):
     """Adiciona uma nova anotação em um tópico específico"""
     topic = Topic.objects.get(id = topic_id)
+    #garante que o topico pertence ao usuario atual
+    if topic.owner != request.user:
+        raise Http404
 
     if request.method != "POST":
         #Nenhum dado foi enviado; cria form em branco
@@ -64,6 +73,9 @@ def edit_entry(request, entry_id):
     """Edita um assunto existente de um tópico"""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+    #garante que o topico pertence ao usuario atual
+    if topic.owner != request.user:
+        raise Http404
 
     if request.method != "POST":
         #requisição inicial; preenche o formulário com informação atual
