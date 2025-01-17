@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "learning_logs",
     "users",
+    #apps de terceiros
+    "bootstrap5"
 ]
 
 MIDDLEWARE = [
@@ -126,3 +128,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # URL LOGIN PAGE
 LOGIN_URL = "/users/login"
+
+BOOTSTRAP5 = {
+    'include_jquery': True,
+    "javascript_url": {
+        "url": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js",
+        "integrity": "sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T",
+        "crossorigin": "anonymous",
+    },
+    "css_url": {
+        "href": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
+        "integrity": "sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB",
+        "crossorigin": "anonymous",
+    },
+}   
