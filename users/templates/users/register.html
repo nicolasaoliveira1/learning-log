@@ -1,11 +1,26 @@
 {% extends "learning_logs/base.html "%}
+{% load bootstrap5%}
+
+{%block header%}
+<h2 class="my-4">Faça o seu registro</h2>
+{%endblock header%}
 
 {%block content%}
-
-<form action="{% url 'register'%}" method="post">
+{%if form.errors%}
+<p class="aviso-erro" style="color:red">* O nome de usuário não deve conter caracteres especiais</p>
+<p class="aviso-erro" style="color:red">* A senha deve ter pelo menos 8 digitos, letras, números, caracteres especiais,
+    e não
+    deve conter o
+    nome de usuário
+</p>
+<p class="aviso-erro" style="color:red">* As senhas digitas precisam estar iguais</p>
+{%endif%}
+<form action="{% url 'register'%}" method="post" class="ul-none">
     {%csrf_token%}
-    {{form.as_p}}
-    <button name="submit">Registrar</button>
+    {%bootstrap_form form%}
+    {%buttons%}
+    <button class="btn btn-primary" name="submit">Registrar</button>
+    {%endbuttons%}
     <input type="hidden" name="next" value="{% url 'index' %}">
 </form>
 

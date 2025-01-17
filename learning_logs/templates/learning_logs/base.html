@@ -7,11 +7,20 @@
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <style>
+        .ul-none ul {
+            display: none;
+        }
+
+        .text-muted {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid px-5">
+    <nav class="navbar navbar-expand-lg mb-3">
+        <div class="container">
             <a class="navbar-brand" href="{% url 'index' %}">Learning Log</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
                 aria-controls="#navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,8 +41,13 @@
             </div>
         </div>
     </nav>
+    <div class="container">
+        <div class="page-header">
+            <div>{% block header %}{% endblock header %}</div>
+        </div>
+        <div>{% block content %}{% endblock content%}</div>
+    </div>
 </body>
 
 
 </html>
-{% block content %}{% endblock content%}
