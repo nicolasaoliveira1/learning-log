@@ -90,3 +90,16 @@ def edit_entry(request, entry_id):
 
     context = {"entry": entry, "topic": topic, "form": form}
     return render(request, "learning_logs/edit_entry.html", context)
+
+@login_required
+def delete_entry(request, entry_id):
+    """Deleta um assunto existente de um tópico"""
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    #garante que o topico pertence ao usuario atual
+    if topic.owner != request.user:
+        raise Http404
+
+    entry.delete()
+    return HttpResponseRedirect(reverse("topic", args=[topic.id]))
+        
